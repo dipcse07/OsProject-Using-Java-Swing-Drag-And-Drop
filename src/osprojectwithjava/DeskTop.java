@@ -306,7 +306,7 @@ public class DeskTop extends javax.swing.JFrame {
         try {
             Runtime runtime = Runtime.getRuntime();
             Process proc = runtime.exec("shutdown -s -t 0");
-            System.out.println("shutdown");
+            //System.out.println("shutdown");
             System.exit(0);
             
         } catch (IOException ex) {
