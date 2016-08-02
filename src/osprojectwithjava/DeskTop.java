@@ -5,8 +5,23 @@
  */
 package osprojectwithjava;
 
+import java.awt.AWTException;
 import java.awt.Color;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.Robot;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 import javax.swing.border.Border;
 
 /**
@@ -31,6 +46,8 @@ public class DeskTop extends javax.swing.JFrame {
     
     public DeskTop() {
         initComponents();
+        showDate();
+        showTime();
     }
 
     /**
@@ -43,6 +60,11 @@ public class DeskTop extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -55,6 +77,40 @@ public class DeskTop extends javax.swing.JFrame {
         setUndecorated(true);
 
         jPanel1.setLayout(null);
+
+        jPanel3.setLayout(null);
+
+        jLabel9.setText("MyComputer");
+        jPanel3.add(jLabel9);
+        jLabel9.setBounds(0, 6, 80, 20);
+
+        jLabel10.setText("ShutDown");
+        jLabel10.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel10MouseClicked(evt);
+            }
+        });
+        jPanel3.add(jLabel10);
+        jLabel10.setBounds(0, 110, 80, 16);
+
+        jPanel1.add(jPanel3);
+        jPanel3.setBounds(0, 340, 90, 130);
+        jPanel3.setVisible(false);
+
+        jPanel2.setLayout(null);
+
+        jLabel8.setText("Refresh");
+        jLabel8.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel8MouseClicked(evt);
+            }
+        });
+        jPanel2.add(jLabel8);
+        jLabel8.setBounds(0, 10, 100, 20);
+
+        jPanel1.add(jPanel2);
+        jPanel2.setBounds(320, 160, 70, 70);
+        jPanel2.setVisible(false);
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/osprojectwithjava/mypc.png"))); // NOI18N
         jLabel2.setText("jLabel2");
@@ -94,18 +150,23 @@ public class DeskTop extends javax.swing.JFrame {
 
         jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/osprojectwithjava/start.png"))); // NOI18N
         jLabel5.setText("jLabel5");
+        jLabel5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel5MouseClicked(evt);
+            }
+        });
         jPanel1.add(jLabel5);
         jLabel5.setBounds(0, 476, 40, 50);
 
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("TimeLabel");
         jPanel1.add(jLabel6);
-        jLabel6.setBounds(565, 480, 130, 20);
+        jLabel6.setBounds(590, 480, 100, 20);
 
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("DateLabel");
         jPanel1.add(jLabel7);
-        jLabel7.setBounds(570, 506, 120, 20);
+        jLabel7.setBounds(590, 500, 100, 20);
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/osprojectwithjava/taskbarpng.png"))); // NOI18N
         jLabel4.setText("jLabel4");
@@ -158,6 +219,15 @@ public class DeskTop extends javax.swing.JFrame {
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
         // TODO add your handling code here:
+         if (SwingUtilities.isRightMouseButton(evt) || evt.isControlDown())     
+        {     
+                int x = evt.getX();
+                 int y = evt.getY();
+                 jPanel2.setLocation(x, y);
+               jPanel2.setVisible(true);
+        
+        //System.out.println("Right Worked");
+        }
         Border empty = BorderFactory.createEmptyBorder();
         jLabel3.setBorder(empty);
         jLabel2.setBorder(empty);
@@ -212,6 +282,41 @@ public class DeskTop extends javax.swing.JFrame {
         jLabel3.setVisible(true);
     }//GEN-LAST:event_jLabel3MouseDragged
 
+    private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
+        // TODO add your handling code here:
+          GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        Robot robo = null;
+        try {
+            robo = new Robot(gd);
+        } catch (AWTException ex) {
+            Logger.getLogger(DeskTop.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        robo.setAutoDelay(100);
+        robo.keyPress(KeyEvent.VK_F5);
+        robo.keyRelease(KeyEvent.VK_F5);
+        jPanel2.setVisible(false);
+    }//GEN-LAST:event_jLabel8MouseClicked
+
+    private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
+        // TODO add your handling code here:
+        jPanel3.setVisible(true);
+    }//GEN-LAST:event_jLabel5MouseClicked
+
+    private void jLabel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel10MouseClicked
+        try {
+            Runtime runtime = Runtime.getRuntime();
+            Process proc = runtime.exec("shutdown -s -t 0");
+            System.out.println("shutdown");
+            System.exit(0);
+            
+        } catch (IOException ex) {
+            Logger.getLogger(DeskTop.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jLabel10MouseClicked
+
+ 
+
+    
     /**
      * @param args the command line arguments
      */
@@ -249,12 +354,43 @@ public class DeskTop extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     // End of variables declaration//GEN-END:variables
+
+   void showDate(){
+    Date d = new Date();
+    SimpleDateFormat D = new SimpleDateFormat("dd-MM-YYYY");
+    jLabel7.setText(D.format(d));
+    
+    
+}
+
+void showTime(){
+    
+    new Timer(0 , new ActionListener(){
+        
+        @Override
+        public void actionPerformed(ActionEvent e){
+            Date d = new Date();
+    
+    SimpleDateFormat t = new SimpleDateFormat("HH:mm:ss a");
+    jLabel6.setText(t.format(d));
+        }
+    }).start();
+    
+}
+
+
+
 }
