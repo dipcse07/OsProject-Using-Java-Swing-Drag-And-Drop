@@ -207,6 +207,16 @@ public class DeskTop extends javax.swing.JFrame {
 
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
         // TODO add your handling code here:
+        if (evt.getClickCount() == 2 && !evt.isConsumed()) {
+            try {
+                evt.consume();
+                Process p = Runtime.getRuntime().exec("cmd /c start shell:mycomputerfolder");
+                System.out.println("Double Click");
+            } catch (IOException ex) {
+                Logger.getLogger(DeskTop.class.getName()).log(Level.SEVERE, null, ex);
+            }
+           }
+        
      Border grayBorder = BorderFactory.createLineBorder(Color.GRAY, 2, true);
      jLabel2.setBorder(grayBorder);
     }//GEN-LAST:event_jLabel2MouseClicked
@@ -228,6 +238,7 @@ public class DeskTop extends javax.swing.JFrame {
         
         //System.out.println("Right Worked");
         }
+         jPanel3.setVisible(false);
         Border empty = BorderFactory.createEmptyBorder();
         jLabel3.setBorder(empty);
         jLabel2.setBorder(empty);
